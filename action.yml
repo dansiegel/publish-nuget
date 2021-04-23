@@ -1,0 +1,24 @@
+name: 'Publish NuGet packages'
+description: 'Publish NuGet package to repository.'
+branding:
+  icon: 'box'
+  color: 'blue'
+inputs:
+  filename:
+    description: 'NuGet package filename or search pattern'
+    required: true
+    default: '**/*.nupkg'
+  apiKey:
+    description: 'API key to access the feed'
+    required: true
+  feedUrl:
+    description: 'NuGet feed URL'
+    required: false
+    default: 'https://api.nuget.org/v3/index.json'
+runs:
+  using: "composite"
+  steps:
+    - name: Push all NuGet packages matching the filename pattern
+      run: ./publish.ps1 -FeedUrl ${{ inputs.filename }} -ApiKey ${{ inputs.apiKey }} -SearchPath ${{ inputs.filename }}
+        Get-ChildItem . -Filter "${{ inputs.filename }}" 
+      shell: powershell

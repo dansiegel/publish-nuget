@@ -1,0 +1,30 @@
+= publish-nuget
+
+Publish NuGet package to a NuGet package feed.
+
+Step syntax:
+
+....
+- name: <name>
+  uses: dansiegel/publish-nuget@<version>
+  with:
+    filename: <filename>
+    apiKey: <apiKey>
+    feedUrl: <feedUrl>
+....
+
+Arguments:
+
+- `<filename>` - filename of the .nupkg package to publish. Can be specified as wildcard. Default value is '**\*.nupkg'.
+- `<apiKey>` - API key to access the NuGet package feed.
+- `<feedUrl>` - URL of the NuGet package feed to publish the package to. Default value is `https://api.nuget.org/v3/index.json`.
+
+Step example:
+....
+- name: publish nuget package
+  uses: dansiegel/publish-nuget@2
+  with:
+    filename: '*.nupkg'
+    apiKey: ${{ secrets.NUGET_API_KEY }}
+    feedUrl: 'https://www.myget.org/F/someFeed/api/v2/package'
+....
