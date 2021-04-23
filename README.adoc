@@ -15,7 +15,7 @@ Step syntax:
 
 Arguments:
 
-- `<filename>` - filename of the .nupkg package to publish. Can be specified as wildcard. Default value is '**\*.nupkg'.
+- `<filename>` - filename of the .nupkg package to publish. Can be specified as wildcard. Default value is '\**\*.nupkg'.
 - `<apiKey>` - API key to access the NuGet package feed.
 - `<feedUrl>` - URL of the NuGet package feed to publish the package to. Default value is `https://api.nuget.org/v3/index.json`.
 

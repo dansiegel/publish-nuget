@@ -19,6 +19,25 @@ runs:
   using: "composite"
   steps:
     - name: Push all NuGet packages matching the filename pattern
-      run: ./publish.ps1 -FeedUrl ${{ inputs.filename }} -ApiKey ${{ inputs.apiKey }} -SearchPath ${{ inputs.filename }}
-        Get-ChildItem . -Filter "${{ inputs.filename }}" 
+      run: |
+        $SearchPath = '${{ inputs.filename }}'
+        $FeedUrl = '${{ inputs.feedUrl }}'
+        $ApiKey = '${{ inputs.apiKey }}'
+        $recurse = $false
+        if($SearchPath.StartsWith("**/") -or $SearchPath.StartsWith("**\\")) {
+            $SearchPath = $SearchPath.Substring(3)
+            $recurse = $true
+            Write-Host "Searching '$SearchPath' recursively"
+        }
+        else {
+            Write-Host "Searching $SearchPath"
+        }
+
+        Get-ChildItem . -Filter $SearchPath -Recurse:$recurse |
+        ForEach-Object {
+            Write-Host "Publishing $_.FullName"
+            nuget push $_.FullName -Source $FeedUrl -ApiKey $ApiKey -SkipDuplicate
+        }
+
+        Write-Host "Packages Published"
       shell: powershell
