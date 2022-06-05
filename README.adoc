@@ -22,7 +22,7 @@ Arguments:
 Step example:
 ....
 - name: publish nuget package
-  uses: dansiegel/publish-nuget@2
+  uses: dansiegel/publish-nuget@<version>
   with:
     filename: '*.nupkg'
     apiKey: ${{ secrets.NUGET_API_KEY }}
