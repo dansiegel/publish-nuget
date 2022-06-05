@@ -19,11 +19,19 @@ runs:
   using: "composite"
   steps:
     - name: Push all NuGet packages matching the filename pattern
+      shell: pwsh
       run: |
         $SearchPath = '${{ inputs.filename }}'
         $FeedUrl = '${{ inputs.feedUrl }}'
         $ApiKey = '${{ inputs.apiKey }}'
         $recurse = $false
+        if(!$FeedUrl) {
+            $FeedUrl = 'https://api.nuget.org/v3/index.json'
+        }
+        if!(!$SearchPath) {
+            $SearchPath = '**/*.nupkg'
+        }
+
         if($SearchPath.StartsWith("**/") -or $SearchPath.StartsWith("**\\")) {
             $SearchPath = $SearchPath.Substring(3)
             $recurse = $true
@@ -40,4 +48,3 @@ runs:
         }
 
         Write-Host "Packages Published"
-      shell: powershell
